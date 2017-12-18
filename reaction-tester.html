@@ -1,0 +1,205 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <title>Reaction time</title>
+        <style>
+            #shapes{
+                position: relative;
+                width: 200px;
+                height: 200px;
+                background-color: black;
+                margin: 10px;
+                
+            }
+            body{
+                font-family: sans-serif;
+                padding: 0;
+                margin: 0;
+            }
+            h1{
+                text-align: center;
+                margin-top:10px; 
+            }
+            #rules{
+                background-color: #F2F2F2;
+                padding: 10% 10% 0 10%;
+            }
+            .sub-heading{
+                font-size: 150%;
+                font-weight: bold;
+            }
+            #left-div{
+                width: 50%;
+                float: left;
+            }
+            #reactionTime{
+                width: 50%;
+            }
+            #shape-area{
+                width: 100%;
+                height: 540px;            
+                margin: 0 auto;
+            }
+            table{
+                margin: auto;
+                border: 1px solid black;
+                width: 100%;
+                background-color: #F2F2F2;
+                padding: 10px;
+            }
+            tr{
+                float: left;
+                width: 33%;
+            }
+            #game{
+                display: none;
+            }
+
+        </style>
+        <script type="text/javascript">
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+                alert("This game can only be played via pc. Dont even try to play it your phone");
+            }
+        </script>
+        
+    </head>
+    <body>
+        
+        <h1>Reaction Time</h1>
+        <div id="rules">
+            <div id="left-div">
+                <p class="sub-heading">What is reaction time?</p>
+                <p>So basically reaction time is the length of time taken by a person to respond to a given stimulus or event.</p>
+                <br>
+                <p class="sub-heading">How to play?</p>
+                <p>Just click on the shapes as fast as you can!</p>
+                <br>
+                <img id="start-game" id="start" src="start.png" alt="Start the game">
+            </div>
+            <div id="right-div">
+                <img id="reactionTime" src="reactionTime.png" alt="Reation Time">
+            </div>
+        </div>
+        <script type="text/javascript">
+            document.getElementById("start-game").onclick=function(){
+                document.getElementById("rules").style.display="none";
+                document.getElementById("game").style.display="block";
+            }
+        </script>
+        <div id="game">
+            <table>
+                <tr>
+                    <th id="result-score">Your score: </th>
+                </tr>
+                <tr>
+                    <th id="result-time">Your time: </th>
+                </tr>
+                <tr>
+                    <th id="result-best">Best score: </th>
+                </tr>
+            </table>
+
+            <div id="shape-area">
+                <div id="shapes">
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            /*
+            Another method to set the timer, but it depends on system date
+            var start = new Date().getTime();
+
+            document.getElementById("shapes").onclick=function(){
+                document.getElementById("shapes").style.display="none";
+                var end = new Date().getTime();
+                var time = end - start;
+                alert('Execution time: ' + time);
+            }*/
+            
+           
+            function changeShape(){
+                document.getElementById("shapes").style.borderRadius = Math.floor(Math.random()*100)+"px";
+                document.getElementById("shapes").style.width = Math.floor(Math.random()*200+100)+"px";
+                document.getElementById("shapes").style.height = Math.floor(Math.random()*200)+100+"px";
+            }
+            function changeColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                document.getElementById("shapes").style.backgroundColor=color;
+            }
+            
+            function changerPosition(){
+                document.getElementById("shapes").style.top = Math.floor(Math.random()*240)+"px";
+                document.getElementById("shapes").style.left = Math.floor(Math.random()*80)+"%";
+            }
+            
+            function calculateScore(r){
+                if(r<0.2){
+                    alert("I bet you are either insane or inhuman. Wait you could also be an alien. Whoever are you, your reaction time is too quick!")
+                    return 100;
+                }
+                    
+                else if(r<0.3)
+                        return 90;
+                else if(r<0.45)
+                        return 80;
+                else if(r<0.55)
+                        return 70;
+                else if(r<0.65)
+                        return 60;
+                else if(r<0.75)
+                        return 50;
+                else if(r<0.85)
+                        return 40;
+                else if(r<0.95)
+                        return 30;
+                else 
+                        return 10;
+                
+            }
+            var best=0;
+            function bestScore(r){
+                if(r>best){
+                    best=r;
+                }
+                    
+            }
+            
+            var start = performance.now();
+            
+            function displayShape(){
+                document.getElementById("shapes").style.display="block";
+                start = performance.now();
+            }
+            
+            function delay(){
+                setTimeout(displayShape, Math.random()*1500);
+            }
+                        
+            document.getElementById("shapes").onclick=function(){
+                document.getElementById("shapes").style.display="none";
+                var end = performance.now();
+                var time =Math.floor(end - start);
+                var score=calculateScore(time/1000);
+                bestScore(score);
+                document.getElementById("result-score").innerHTML="Your score: "+score;
+                document.getElementById("result-time").innerHTML="Your time: "+(time/1000)+" s";
+                document.getElementById("result-best").innerHTML="Best score: "+best;
+                changeShape();
+                changerPosition();
+                changeColor();
+                delay();
+            }
+   
+        </script>
+    </body>
+</html>
